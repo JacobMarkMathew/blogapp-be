@@ -31,6 +31,29 @@ app.post("/create",async(req,res)=>{
     })
 
 })
+
+//viewmypost
+
+app.post("/viewmypost",(req,res)=>{
+    let input = req.body
+    let token = req.headers.token
+
+    jsonwebtoken.verify("blogApp",(error,decoded)=>{
+        if(decoded && decoded.email){
+
+            postModel.find(input).then((items)=>{
+                res.json(items)
+            }).catch((error)=>{
+                res.json({"status":"error"})
+            })
+        } else{
+            res.json({"status":"invalid authentication"})
+        }
+    })
+})
+
+
+
 //viewall
 app.post("/viewall",(req,res)=>{
     let token = req.headers.token
